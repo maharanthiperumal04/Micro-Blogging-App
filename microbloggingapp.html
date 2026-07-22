@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro Blogging App</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginSection = document.getElementById('login-section');
+            const postSection = document.getElementById('post-section');
+            const feedSection = document.getElementById('feed-section');
+            const loginButton = document.getElementById('login-button');
+            const logoutButton = document.getElementById('logout-button');
+            const postButton = document.getElementById('post-button');
+            const postContent = document.getElementById('post-content');
+            const feed = document.getElementById('feed');
+            const usernameInput = document.getElementById('username');
+            const header = document.querySelector('header h1');
+
+            // Function to show the login section
+            function showLogin() { 
+                loginSection.style.display = 'block'; 
+                postSection.style.display = 'none'; 
+                feedSection.style.display = 'none'; 
+                logoutButton.style.display = 'none'; 
+                header.textContent = 'Micro Blogging App';
+            }
+
+            // Function to show the main app
+            function showApp(username) { 
+                loginSection.style.display = 'none'; 
+                postSection.style.display = 'block'; 
+                feedSection.style.display = 'block'; 
+                logoutButton.style.display = 'block'; 
+                header.textContent = `Welcome, ${username}!`;
+            }
+
+            // Function to get the current date and time
+            function getCurrentDateTime() {
+                const now = new Date(); 
+                return now.toLocaleString();
+            }
+
+            // Event listener for login button
+            loginButton.addEventListener('click', () => { 
+                const username = usernameInput.value.trim();
+                if (username) {
+                    // Simple authentication (in-memory)
+                    showApp(username);
+                } else {
+                    alert('Please enter a username.');
+                }
+            });
+
+            // Event listener for logout button
+            logoutButton.addEventListener('click', () => { 
+                usernameInput.value = '';
+                showLogin();
+            });
+
+            // Event listener for post button
+            postButton.addEventListener('click', () => {
+                const content = postContent.value.trim();
+                if (content) {
+                    const post = document.createElement('div');
+                    post.className = 'post';
+                    const dateTime = getCurrentDateTime();
+                    post.innerHTML = `<p>${content}</p><small>${dateTime}</small>`;
+                    feed.prepend(post);
+                    postContent.value = ''; // Clear the input field after posting
+                } else {
+                    alert('Please enter some content to post.');
+                }
+            });
+
+            // Initialize the app to show login
+            showLogin();
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif; 
+            margin: 0;
+            padding: 0; 
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh;
+            background-image: url('https://cdn.wallpapersafari.com/29/89/PktVoA.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        #app {
+            width: 500px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: #001b38; 
+            color: white;
+            padding: 10px; 
+            text-align: center; 
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+        }
+
+        header h1 { 
+            margin: 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        #login-section, #post-section, #feed-section { 
+            display: none;
+        }
+
+        #post-section { 
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        #post-content { 
+            width: 100%; 
+            height: 100px; 
+            padding: 10px;
+            margin-bottom: 10px; 
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #post-button, #login-button, #logout-button { 
+            padding: 10px;
+            background-color: #001b38; 
+            color: white;
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin-top: 10px;
+        }
+
+        #post-button:hover, #login-button:hover, #logout-button:hover { 
+            background-color: #004080;
+        }
+
+        #feed-section { 
+            margin-top: 20px;
+        }
+
+        #feed-section h2 { 
+            margin-bottom: 10px;
+        }
+
+        .post {
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            margin-bottom: 10px;
+            background-color: white;
+        }
+
+        .post small { 
+            display: block; 
+            margin-top: 10px; 
+            color: #666;
+        }
+
+        #username { 
+            width: 100%; 
+            padding: 10px;
+            margin-bottom: 10px; 
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Micro Blogging App</h1>
+            <button id="logout-button" style="display: none;">Logout</button>
+        </header>
+        <main>
+            <section id="login-section">
+                <h2>Login</h2>
+                <input type="text" id="username" placeholder="Enter your username">
+                <button id="login-button">Login</button>
+            </section>
+            <section id="post-section">
+                <textarea id="post-content" placeholder="What's on your mind?"></textarea>
+                <button id="post-button">Post</button>
+            </section>
+            <section id="feed-section">
+                <h2>Feed</h2>
+                <div id="feed"></div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
